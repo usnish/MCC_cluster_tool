@@ -7,11 +7,6 @@ from ast import literal_eval
 
 from helper_functions import *
 
-# converts command-line flag for sort type into Pandas Dataframe field name
-def int2sort(sort_type):
-  if sort_type == 2: return 'avg_cost'
-  if sort_type == 3: return 'num_person_years'
-  return 'total_cost'
 
 # converts command-line flag to boolean
 def str2bool(v):
@@ -32,6 +27,7 @@ def segment_stats(data):
 
 
 def main(args):
+  print(args)
   df_merged = pd.read_csv(args.input_file)
   df_merged.classes = df_merged.classes.apply(lambda x: literal_eval(x))
   df_merged.agg_indices = \
@@ -117,7 +113,7 @@ def main(args):
   for idx, segment in enumerate(segments):
     segment_df = df_merged[df_merged[segment[0][0]] & df_merged[segment[0][1]]]
     if args.age_bucket:
-      segment_df = segment_df[segment_df.age_labels == segment[1]]
+      segment_df = segment_df[segment_df.age_bin == segment[1]]
     if args.gender_bucket:
       segment_df = segment_df[segment_df.sex == segment[-1]]
     stats = segment_stats(segment_df)
@@ -145,9 +141,10 @@ if __name__ == '__main__':
                       help='Filter by gender [True/False]')
   parser.add_argument('--age_bucket', default=False, type=str2bool,
                       help='Bucket by age group [True/False]')
-  parser.add_argument('--sort_type', default=1, type=int2sort,
-                      help='Sort results by: [1=total cost, 2=avg cost, '
-                      '3=# of person-years]')
+  parser.add_argument('--sort_type', default='total_cost',
+                      choices=['total_cost', 'avg_cost', 'num_person_years'],
+                      help='Sort results by: total_cost, avg_cost, '
+                      'or num_person_years]')
   parser.add_argument('--input_file', type=str, required=True,
                       help='Location of input CSV file containing claims by ' +
                       'person-year')

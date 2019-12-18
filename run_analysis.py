@@ -5,13 +5,7 @@ import os
 
 from ast import literal_eval
 
-from helper_functions import *
-
-
-# converts command-line flag to boolean
-def str2bool(v):
-  return v.lower() in ("yes", "true", "t", "y")
-
+from helper_functions import comorbidity_indicator
 
 # Computes basic stats for a data segment; takes in a Pandas Dataframe with
 # appropriate fields (sum_costs and num_comorbidities).
@@ -136,10 +130,10 @@ if __name__ == '__main__':
   parser.add_argument('--py_filter', default=1, type=int,
                       help='Minimum number of person-years per population ' +
                       'segment to include in results')
-  parser.add_argument('--gender_bucket', default=False, type=str2bool,
-                      help='Filter by gender [True/False]')
-  parser.add_argument('--age_bucket', default=False, type=str2bool,
-                      help='Bucket by age group [True/False]')
+  parser.add_argument('--gender_bucket', action='store_true',
+                      help='Bucket by gender')
+  parser.add_argument('--age_bucket', action='store_true',
+                      help='Bucket by age group')
   parser.add_argument('--sort_type', default='total_cost',
                       choices=['total_cost', 'avg_cost', 'num_person_years'],
                       help='Sort results by: total_cost, avg_cost, '

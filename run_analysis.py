@@ -27,7 +27,6 @@ def segment_stats(data):
 
 
 def main(args):
-  print(args)
   df_merged = pd.read_csv(args.input_file)
   df_merged.classes = df_merged.classes.apply(lambda x: literal_eval(x))
   df_merged.agg_indices = \

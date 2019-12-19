@@ -147,7 +147,7 @@ def prevalence(data, indicator):
     return data[indicator].sum() / data.shape[0]
     
 
-def age_adjusted_Frequency(data, indicator=None, comorbidities=None, weights = pd.Series([]), yr = None):
+def age_adjusted_frequency(data, indicator=None, comorbidities=None, weights = pd.Series([]), yr = None):
     """
     parameters --
         data : dataframe, rows are patient-years
